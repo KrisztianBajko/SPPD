@@ -4,15 +4,58 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    // Start is called before the first frame update
+    #region Public Fields
+    public bool isAlive;
+
+    #endregion
+
+
+    #region Private Fields
+    [SerializeField] private float currentHealth;
+
+    #endregion
+
+    #region MonoBehaviour Callbacks
+
     void Start()
     {
-        
+        isAlive = true;
+        currentHealth = 100;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(currentHealth <= 0)
+        {
+            currentHealth = 0;
+            isAlive = false;
+        }
+
+
+        if (!isAlive)
+        {
+            Die();
+        }
     }
+
+    #endregion
+
+
+
+    #region Public Methods
+    public void TakeDamage(float dmg)
+    {
+        currentHealth -= dmg;
+    }
+
+    #endregion
+
+
+    #region Private Methods
+    private void Die()
+    {
+        Destroy(gameObject,0.5f);
+    }
+
+    #endregion
 }

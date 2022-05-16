@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
 {
     #region Public Fields
     public bool isTargetAPlayer;
-
+    public float damageAmount = 50;
     #endregion
 
 
@@ -35,7 +35,7 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy") && !isTargetAPlayer)
         {
             // Deal damage
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<Health>().TakeDamage(damageAmount);
             gameObject.SetActive(false);
         }
         else if (other.gameObject.CompareTag("Player") && isTargetAPlayer)
