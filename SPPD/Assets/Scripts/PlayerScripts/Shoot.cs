@@ -5,12 +5,15 @@ using UnityEngine;
 public class Shoot : MonoBehaviour
 {
     #region Public Fields
-
+    public float bulletAmount;
+    public float maxBulletAmount;
 
     #endregion
 
 
     #region Private Fields
+    [SerializeField] private float timeToNextAttack;
+    [SerializeField] private float fireRate;
     [SerializeField] private Transform firePointGameObject;
 
 
@@ -25,9 +28,14 @@ public class Shoot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+     
+        if (Input.GetMouseButtonDown(0) && Time.time > timeToNextAttack && bulletAmount > 0)
         {
-            ObjectPooler.Instance.SpawnFromPool("Bullet", firePointGameObject.position, Quaternion.identity, false,Camera.main.transform.forward);
+            bulletAmount--;
+            timeToNextAttack = Time.time + fireRate;
+
+            ObjectPooler.Instance.SpawnFromPool("Bullet", firePointGameObject.position, Quaternion.identity, false, Camera.main.transform.forward);
+
         }
     }
 

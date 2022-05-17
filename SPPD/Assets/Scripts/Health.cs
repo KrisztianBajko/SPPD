@@ -6,13 +6,12 @@ public class Health : MonoBehaviour
 {
     #region Public Fields
     public bool isAlive;
-
+    public float currentHealth, maxHealth;
     #endregion
 
 
     #region Private Fields
-    [SerializeField] private float currentHealth;
-
+    
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -20,7 +19,7 @@ public class Health : MonoBehaviour
     void Start()
     {
         isAlive = true;
-        currentHealth = 100;
+        currentHealth = maxHealth;
     }
 
     void Update()

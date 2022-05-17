@@ -35,13 +35,11 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy") && !isTargetAPlayer)
         {
             // Deal damage
-            other.gameObject.GetComponent<Health>().TakeDamage(damageAmount);
-            gameObject.SetActive(false);
+            DamageTheTarget(other);
         }
         else if (other.gameObject.CompareTag("Player") && isTargetAPlayer)
         {
-            Debug.Log("Player Hit by a Bullet");
-            gameObject.SetActive(false);
+            DamageTheTarget(other);
         }
         else
         {
@@ -64,7 +62,11 @@ public class Bullet : MonoBehaviour
 
 
     #region Private Methods
-
+    private void DamageTheTarget(Collider target)
+    {
+        target.gameObject.GetComponent<Health>().TakeDamage(damageAmount);
+        gameObject.SetActive(false);
+    }
 
     #endregion
 }

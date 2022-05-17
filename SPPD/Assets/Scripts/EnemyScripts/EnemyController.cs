@@ -15,8 +15,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform firePointGameObject;
     [SerializeField] private float timeToNextAttack = 2f;
     [SerializeField] private float fireRate = 5f;
+    [SerializeField] private float viewAngle;
+    [SerializeField] private LayerMask targetLayer;
     private bool isAttacking;
-
+    public bool isPlayerVisible;
 
     private Transform player;
     private NavMeshAgent agent;
@@ -32,11 +34,12 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player").transform;
     }
-
+    
     void Update()
     {
         if(player != null)
         {
+            CheckIfPlayerIsVisible();
             CheckIfCanAttack();
         }
         
@@ -54,6 +57,28 @@ public class EnemyController : MonoBehaviour
 
     #region Private Methods
 
+    private void CheckIfPlayerIsVisible()
+    {
+        Vector3 targetDirection = (player.position - transform.position).normalized;
+
+        if(Vector3.Angle(transform.forward, targetDirection) < viewAngle)
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, player.position);
+
+            if(!Physics.Raycast(transform.position, targetDirection, distanceToTarget, targetLayer))
+            {
+                isPlayerVisible = true;
+            }
+            else
+            {
+                isPlayerVisible = false;
+            }
+        }
+        
+    }
+
+
+
     private void CheckIfCanAttack()
     {
         if (Vector3.Distance(transform.position, player.position) > attackRange)
@@ -67,7 +92,7 @@ public class EnemyController : MonoBehaviour
         }
 
 
-        if (isAttacking)
+        if (isAttacking && isPlayerVisible)
         {
             AttackThePlayer();
         }
@@ -81,13 +106,14 @@ public class EnemyController : MonoBehaviour
     {
         anim.SetBool("IsFiring", false);
         anim.SetBool("IsRunning", true);
+        agent.stoppingDistance = 2f;
         agent.SetDestination(player.position);
     }
     private void AttackThePlayer()
     {
         anim.SetBool("IsFiring", true);
         anim.SetBool("IsRunning", false);
-        agent.stoppingDistance = attackRange;
+        agent.stoppingDistance = attackRange -1;
         transform.LookAt(player.transform);
 
         if (Time.time > timeToNextAttack)

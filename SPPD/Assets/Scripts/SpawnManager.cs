@@ -43,38 +43,12 @@ public class SpawnManager : MonoBehaviour
 
     void Update()
     {
-        if (spawnedEnemies.Count != 0)
-        {
-            for (int i = 0; i < spawnedEnemies.Count; i++)
-            {
-                if (!spawnedEnemies[i].GetComponent<Health>().isAlive)
-                {
-                    spawnedEnemies.Remove(spawnedEnemies[i]);
-                }
-            }
-        }
-        else
-        {
-            isEnemiesAlive = false;
-        }
+        CheckIfEnemiesAlive();
+        CountDown();
 
 
-        if (!isEnemiesAlive)
-        {
-            if (timeForNextwave <= 0)
-            {
-                timeForNextwave = timeBetweenWaves;
-               
-                isEnemiesAlive = true;
-               
-                    StartCoroutine(SpawnEnemy());
-                
-            }
-            else
-            {
-                timeForNextwave -= Time.deltaTime;
-            }
-        }
+
+
 
      
     }
@@ -107,9 +81,7 @@ public class SpawnManager : MonoBehaviour
         yield break;
     }
 
-
     
-
     #endregion
 
 
@@ -121,7 +93,43 @@ public class SpawnManager : MonoBehaviour
 
 
     #region Private Methods
-    
+    private void CheckIfEnemiesAlive()
+    {
+        if (spawnedEnemies.Count != 0)
+        {
+            for (int i = 0; i < spawnedEnemies.Count; i++)
+            {
+                if (!spawnedEnemies[i].GetComponent<Health>().isAlive)
+                {
+                    spawnedEnemies.Remove(spawnedEnemies[i]);
+                }
+            }
+        }
+        else
+        {
+            isEnemiesAlive = false;
+        }
+    }
+   
+    private void CountDown()
+    {
+        if (!isEnemiesAlive)
+        {
+            if (timeForNextwave <= 0)
+            {
+                timeForNextwave = timeBetweenWaves;
+
+                isEnemiesAlive = true;
+
+                StartCoroutine(SpawnEnemy());
+                
+            }
+            else
+            {
+                timeForNextwave -= Time.deltaTime;
+            }
+        }
+    }
 
 
     #endregion
