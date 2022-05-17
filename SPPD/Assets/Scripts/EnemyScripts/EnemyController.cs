@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour
 
     private Transform player;
     private NavMeshAgent agent;
+    private Animator anim;
     
     #endregion
 
@@ -27,6 +28,7 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.Find("Player").transform;
     }
@@ -77,11 +79,14 @@ public class EnemyController : MonoBehaviour
 
     private void FollowThePlayer()
     {
+        anim.SetBool("IsFiring", false);
+        anim.SetBool("IsRunning", true);
         agent.SetDestination(player.position);
     }
     private void AttackThePlayer()
     {
-
+        anim.SetBool("IsFiring", true);
+        anim.SetBool("IsRunning", false);
         agent.stoppingDistance = attackRange;
         transform.LookAt(player.transform);
 
