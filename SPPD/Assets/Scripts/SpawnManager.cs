@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class SpawnManager : MonoBehaviour
 {
     #region Public Fields
@@ -26,9 +26,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float timeBetweenWaves;
     [SerializeField] private float spawnRate;
     [SerializeField] private int enemySpawnCount;
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private int wavesLeftToNextLevel;
+    [SerializeField] private bool isLevelOneActive;
+    [SerializeField] private GameObject[] enemyPrefab;
 
-
+    private GameObject spawnedEnemy;
+    private bool isWaveOne;
     private bool isEnemiesAlive = false;
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     
@@ -46,11 +49,6 @@ public class SpawnManager : MonoBehaviour
         CheckIfEnemiesAlive();
         CountDown();
 
-
-
-
-
-     
     }
 
     IEnumerator SpawnEnemy()
@@ -65,7 +63,27 @@ public class SpawnManager : MonoBehaviour
                 float randomPosz = Random.Range(-15, 15);
                 Vector3 location = new Vector3(hit.point.x + randomPosx, hit.point.y + .5f, hit.point.z + randomPosz);
 
-                GameObject spawnedEnemy = Instantiate(enemyPrefab, location , Quaternion.identity);
+
+                // as i have only 2 level now i just simple check the bool variable if im in level 2 otherwise i leave it false
+              
+                if (isLevelOneActive)
+                {
+                    spawnedEnemy = Instantiate(enemyPrefab[0], location, Quaternion.identity);
+                }
+                else
+                {
+                    if (isWaveOne)
+                    {
+                        spawnedEnemy = Instantiate(enemyPrefab[0], location, Quaternion.identity);
+                    }
+                    else
+                    {
+                        spawnedEnemy = Instantiate(enemyPrefab[1], location, Quaternion.identity);
+                    }
+                }
+               
+                
+                
 
                 spawnedEnemies.Add(spawnedEnemy);
 
@@ -118,11 +136,19 @@ public class SpawnManager : MonoBehaviour
             if (timeForNextwave <= 0)
             {
                 timeForNextwave = timeBetweenWaves;
-
-                isEnemiesAlive = true;
-
-                StartCoroutine(SpawnEnemy());
+                if(wavesLeftToNextLevel == 0)
+                {
+                    wavesLeftToNextLevel = 2;
+                    SceneManager.LoadScene(2);
+                }
+                else
+                {
+                    wavesLeftToNextLevel--;
+                }
                 
+                isEnemiesAlive = true;
+                isWaveOne = !isWaveOne;
+                StartCoroutine(SpawnEnemy());
             }
             else
             {

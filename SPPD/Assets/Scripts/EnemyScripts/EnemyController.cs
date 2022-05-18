@@ -50,7 +50,11 @@ public class EnemyController : MonoBehaviour
 
 
     #region Public Methods
-
+    public void Shoot()
+    {
+        //shoot based on animation
+        ObjectPooler.Instance.SpawnFromPool("Bullet", firePointGameObject.position, Quaternion.identity, true, firePointGameObject.transform.forward);
+    }
 
     #endregion
 
@@ -111,17 +115,24 @@ public class EnemyController : MonoBehaviour
     }
     private void AttackThePlayer()
     {
+        Vector3 lookDirection = new Vector3(player.transform.position.x, 0f, player.transform.position.z);
+        
+        transform.LookAt(lookDirection,Vector3.up);
+
+        Vector3 playerDirection = new Vector3(player.transform.position.x, player.transform.position.y + .5f, player.transform.position.z);
+        firePointGameObject.transform.LookAt(playerDirection);
         anim.SetBool("IsFiring", true);
         anim.SetBool("IsRunning", false);
         agent.stoppingDistance = attackRange -1;
-        transform.LookAt(player.transform);
+        
 
-        if (Time.time > timeToNextAttack)
+        //shoot based on fire rate
+      /*  if (Time.time > timeToNextAttack)
         {
             timeToNextAttack = Time.time + fireRate;
 
             ObjectPooler.Instance.SpawnFromPool("Bullet", firePointGameObject.position, Quaternion.identity,true,firePointGameObject.transform.forward);
-        }
+        }*/
     }
 
     #endregion

@@ -30,9 +30,12 @@ public class DropAmmunation : MonoBehaviour
 
     private void OnDisable()
     {
+
+        Vector3 dropPosition = new Vector3(transform.position.x, transform.position.y - 1.5f, transform.position.z);
+
         if(Random.value > dropChance)
         {
-            ObjectPooler.Instance.SpawnPickUpFromPool("Ammo", transform.position, Quaternion.identity);
+            ObjectPooler.Instance.SpawnPickUpFromPool("Ammo", dropPosition, Quaternion.identity);
         }
     }
     #endregion

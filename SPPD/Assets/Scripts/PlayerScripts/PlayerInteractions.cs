@@ -69,6 +69,10 @@ public class PlayerInteractions : MonoBehaviour
             }
             
         }
+        else
+        {
+            
+        }
     }
     #endregion
 
