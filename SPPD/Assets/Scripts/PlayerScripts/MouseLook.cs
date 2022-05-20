@@ -23,12 +23,17 @@ public class MouseLook : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        LookAround();
+        if (!GameManager.Instance.isLevelFinished)
+        {
+            LookAround();
+        }
+        
 
 
     }

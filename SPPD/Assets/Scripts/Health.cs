@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
 
 
     #region Private Fields
-    
+    [SerializeField] private bool isAPlayer;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -19,7 +19,19 @@ public class Health : MonoBehaviour
     void Start()
     {
         isAlive = true;
-        currentHealth = maxHealth;
+        if(!isAPlayer)
+        {
+            currentHealth = maxHealth;
+        }
+        else
+        {
+            currentHealth = GameManager.Instance.playerHealth;
+        }
+        
+        
+      
+        
+         
     }
 
     void Update()
@@ -53,6 +65,7 @@ public class Health : MonoBehaviour
     #region Private Methods
     private void Die()
     {
+       
         Destroy(gameObject,0.1f);
     }
 

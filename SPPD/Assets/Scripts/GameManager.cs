@@ -28,20 +28,19 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-       
 
+        DontDestroyOnLoad(gameObject);
     }
-        #endregion
+    #endregion
 
 
     #region Public Fields
-
-
+    public float playerHealth;
+    public bool isLevelFinished;
     #endregion
 
 
     #region Private Fields
-
 
     #endregion
 
@@ -54,6 +53,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        
 
     }
 
@@ -62,14 +62,7 @@ public class GameManager : MonoBehaviour
 
 
     #region Public Methods
-    public void OnStartGameButtonClicked()
-    {
-        SceneManager.LoadScene(1);
-    }
-    public void OnQuitGameButtonClicked()
-    {
-        Application.Quit();
-    }
+    
 
     #endregion
 

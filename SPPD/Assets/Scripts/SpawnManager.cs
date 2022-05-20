@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 public class SpawnManager : MonoBehaviour
 {
     #region Public Fields
-
-
+    
     #endregion
 
     #region Singleton
@@ -29,11 +27,12 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int wavesLeftToNextLevel;
     [SerializeField] private bool isLevelOneActive;
     [SerializeField] private GameObject[] enemyPrefab;
-
+   
     private GameObject spawnedEnemy;
     private bool isWaveOne;
     private bool isEnemiesAlive = false;
     private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private UIManager uiManagerScript;
     
     #endregion
 
@@ -41,13 +40,20 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        
+        GameManager.Instance.isLevelFinished = false;
+
+        uiManagerScript = GameObject.Find("UIManager").GetComponent<UIManager>();
+        uiManagerScript.WavesCount(wavesLeftToNextLevel);
     }
 
     void Update()
     {
-        CheckIfEnemiesAlive();
-        CountDown();
+        if (!GameManager.Instance.isLevelFinished)
+        {
+            CheckIfEnemiesAlive();
+            CountDown();
+        }
+        
 
     }
 
@@ -136,23 +142,29 @@ public class SpawnManager : MonoBehaviour
             if (timeForNextwave <= 0)
             {
                 timeForNextwave = timeBetweenWaves;
-                if(wavesLeftToNextLevel == 0)
+             
+                
+                wavesLeftToNextLevel--;
+                
+                 
+                uiManagerScript.WavesCount(wavesLeftToNextLevel);
+                if(wavesLeftToNextLevel == -1)
                 {
-                    wavesLeftToNextLevel = 2;
-                    SceneManager.LoadScene(2);
+                    GameManager.Instance.isLevelFinished = true;
+                    
                 }
                 else
                 {
-                    wavesLeftToNextLevel--;
+                    isEnemiesAlive = true;
+                    isWaveOne = !isWaveOne;
+                    StartCoroutine(SpawnEnemy());
                 }
-                
-                isEnemiesAlive = true;
-                isWaveOne = !isWaveOne;
-                StartCoroutine(SpawnEnemy());
+               
             }
             else
             {
                 timeForNextwave -= Time.deltaTime;
+                uiManagerScript.WaveCountDown(timeForNextwave);
             }
         }
     }

@@ -429,9 +429,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb30b8d27e19dca4bb1369160d208eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletAmount: 15
+  maxBulletAmount: 0
   timeToNextAttack: 1
   fireRate: 1
-  bulletAmount: 15
   firePointGameObject: {fileID: 895700328}
 --- !u!114 &1282030969
 MonoBehaviour:
@@ -445,6 +446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 076b27aef9c3cd1469076cdc09e14eec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healAmount: 0
+  ammoAmount: 0
 --- !u!114 &1282030976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,7 +461,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlive: 1
-  currentHealth: 100
+  currentHealth: 0
+  maxHealth: 1000
+  isAPlayer: 1
 --- !u!1001 &3641677933125221274
 PrefabInstance:
   m_ObjectHideFlags: 0

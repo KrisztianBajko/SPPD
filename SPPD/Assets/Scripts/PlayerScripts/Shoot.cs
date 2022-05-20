@@ -28,15 +28,11 @@ public class Shoot : MonoBehaviour
 
     void Update()
     {
-     
-        if (Input.GetMouseButtonDown(0) && Time.time > timeToNextAttack && bulletAmount > 0)
+        if (!GameManager.Instance.isLevelFinished)
         {
-            bulletAmount--;
-            timeToNextAttack = Time.time + fireRate;
-
-            ObjectPooler.Instance.SpawnFromPool("Bullet", firePointGameObject.position, Quaternion.identity, false, Camera.main.transform.forward);
-
+            Shooting();
         }
+       
     }
 
     #endregion
@@ -50,7 +46,17 @@ public class Shoot : MonoBehaviour
 
 
     #region Private Methods
+    private void Shooting()
+    {
+        if (Input.GetMouseButtonDown(0) && Time.time > timeToNextAttack && bulletAmount > 0)
+        {
+            bulletAmount--;
+            timeToNextAttack = Time.time + fireRate;
 
+            ObjectPooler.Instance.SpawnFromPool("Bullet", firePointGameObject.position, Quaternion.identity, false, Camera.main.transform.forward);
+
+        }
+    }
 
     #endregion
 }

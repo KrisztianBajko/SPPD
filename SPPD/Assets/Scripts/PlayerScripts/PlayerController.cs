@@ -38,9 +38,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        CalculateGravity();
-        OnPlayerJump();
-        OnPlayerMove();
+        if (!GameManager.Instance.isLevelFinished)
+        {
+            CalculateGravity();
+            OnPlayerJump();
+            OnPlayerMove();
+        }
+       
         
        
     }

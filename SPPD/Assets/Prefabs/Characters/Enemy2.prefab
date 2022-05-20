@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlive: 1
-  currentHealth: 100
+  currentHealth: 0
   maxHealth: 150
 --- !u!95 &375466282262468895
 Animator:
